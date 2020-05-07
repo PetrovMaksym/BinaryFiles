@@ -1,15 +1,69 @@
 #include "Stdafx.h"
+using namespace std;
 /*
-Создать бинарный файл с информацией о работниках телестудии: 
-    - фамилия;
-    - должность;
-    - образование;
-    - дата приема на работу;
-    - пол. 
-Вывести сведения о работниках телестудии, которые работают на должности инженеров, но не имеющие 
-высшего образования
+РЎРѕР·РґР°С‚СЊ Р±РёРЅР°СЂРЅС‹Р№ С„Р°Р№Р» СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ СЂР°Р±РѕС‚РЅРёРєР°С… С‚РµР»РµСЃС‚СѓРґРёРё: 
+    - С„Р°РјРёР»РёСЏ;
+    - РґРѕР»Р¶РЅРѕСЃС‚СЊ;
+    - РѕР±СЂР°Р·РѕРІР°РЅРёРµ;
+    - РґР°С‚Р° РїСЂРёРµРјР° РЅР° СЂР°Р±РѕС‚Сѓ;
+    - РїРѕР». 
+Р’С‹РІРµСЃС‚Рё СЃРІРµРґРµРЅРёСЏ Рѕ СЂР°Р±РѕС‚РЅРёРєР°С… С‚РµР»РµСЃС‚СѓРґРёРё, РєРѕС‚РѕСЂС‹Рµ СЂР°Р±РѕС‚Р°СЋС‚ РЅР° РґРѕР»Р¶РЅРѕСЃС‚Рё РёРЅР¶РµРЅРµСЂРѕРІ, РЅРѕ РЅРµ РёРјРµСЋС‰РёРµ 
+РІС‹СЃС€РµРіРѕ РѕР±СЂР°Р·РѕРІР°РЅРёСЏ
 */
+template <typename T>
+string toString(T val)
+{
+    std::ostringstream oss;
+    oss << val;
+    return oss.str();
+}
+
 void low()
 {
+    system("cls");
     printf("\nLow task level:\n");
+    int count_workers = 10;
+    WorkerTV* workers = new WorkerTV[count_workers];
+    for (size_t i = 0; i < count_workers; i++)
+    {
+        workers[i].surname   = "Worker" + toString(i + 1);
+        workers[i].position  = ((rand() % 2) == 1) ? "enginer" : "anyworker";
+        workers[i].education =  rand() % 2;
+       // workers[i].employment_date  = ;
+        workers[i].gender    = ((rand() % 2) == 1) ? "man" : "woman";
+    }
+
+    string filename = "WorkerTVInfo";
+    ofstream f_out; f_out.open(filename, ios::binary);
+    int buffersize = sizeof(WorkerTV) * count_workers;
+    f_out.write((char*)workers, buffersize); f_out.close();
+
+    WorkerTV* buf = new WorkerTV[count_workers];
+    ifstream f_in; f_in.open(filename, ios::binary);
+    f_in.read((char*)buf, buffersize); f_in.close();
+
+    cout << "\nРРЅС„РѕСЂРјР°С†РёСЏ РїСЂРѕС‡РёС‚Р°РЅРЅР°СЏ СЃ С„Р°Р№Р»Р° <<WorkerTVInfo.bin>>: \n\t";
+    for (size_t i = 0; i < count_workers; i++)
+    {
+        cout << workers[i].surname<< " ";
+        cout << workers[i].position << " ";
+        cout << workers[i].education << " ";
+        cout << workers[i].gender <<"\n\t";
+    }
+
+    cout << "\nCРІРµРґРµРЅРёСЏ Рѕ СЂР°Р±РѕС‚РЅРёРєР°С… С‚РµР»РµСЃС‚СѓРґРёРё, РєРѕС‚РѕСЂС‹Рµ СЂР°Р±РѕС‚Р°СЋС‚ РЅР° РґРѕР»Р¶РЅРѕСЃС‚Рё РёРЅР¶РµРЅРµСЂРѕРІ, РЅРѕ РЅРµ РёРјРµСЋС‰РёРµ\n" 
+        "РІС‹СЃС€РµРіРѕ РѕР±СЂР°Р·РѕРІР°РЅРёСЏ РїСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ СЃ С„Р°Р№Р»Р° <<WorkerTVInfo.bin>>: \n\t";
+    for (size_t i = 0; i < count_workers; i++)
+    {
+        if (workers[i].position== static_cast<string>("enginer") && workers[i].education) {
+            cout << workers[i].surname << " ";
+            cout << workers[i].position << " ";
+            cout << workers[i].education << " ";
+            cout << workers[i].gender << "\n\t";
+        }
+    }
+    cout << "\nРќР°Р¶РјРё Enter РґР»СЏ Р·Р°РІРµСЂС€РµРЅРёСЏ...\n";
+    while (getchar() != '\n') { continue; }
 }
+
+
